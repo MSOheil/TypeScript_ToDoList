@@ -9,7 +9,7 @@ const input = document.querySelector<HTMLInputElement>("#new-task-title");
 const tasks: task[] = loadTasks();
 tasks.forEach(AddNewTask)
 
-type task = {
+interface task {
     id: string,
     title: string,
     completed: boolean,
@@ -57,12 +57,19 @@ function AddNewTask(task: task): boolean {
 
 }
 
-function saveTasks() {
+function saveTasks():void {
+    SetItemInLocalStorage("Tasks",tasks);
     localStorage.setItem("Tasks", JSON.stringify(tasks));
-
 }
 function loadTasks(): task[] {
-    var taskJson = localStorage.getItem("Tasks");
+    var taskJson = GetLocalStorageItemByItemName("Tasks")
     if (taskJson == null) return [];
     return JSON.parse(taskJson);
+}
+function GetLocalStorageItemByItemName(itemName: string) {
+    return localStorage.getItem(itemName);
+}
+
+function SetItemInLocalStorage(itemName:string,value:any): void{
+    localStorage.setItem(itemName, JSON.stringify(value));
 }
